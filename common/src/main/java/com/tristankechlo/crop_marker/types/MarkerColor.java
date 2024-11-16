@@ -16,7 +16,7 @@ public enum MarkerColor implements StringRepresentable {
     private final float[] uvsLarge;
     private final float[] uvsSmallAnimated;
     private final float[] uvsLargeAnimated;
-    private static final StringRepresentable.EnumCodec<MarkerColor> CODEC;
+    public static final StringRepresentable.EnumCodec<MarkerColor> CODEC = StringRepresentable.fromEnum(MarkerColor::values);
 
     MarkerColor(String name, float x1, float y1, float x2, float y2) {
         this.name = name;
@@ -54,10 +54,6 @@ public enum MarkerColor implements StringRepresentable {
 
     public static MarkerColor fromString(String string) {
         return CODEC.byName(string, GREEN);
-    }
-
-    static {
-        CODEC = StringRepresentable.fromEnum(MarkerColor::values);
     }
 
 }

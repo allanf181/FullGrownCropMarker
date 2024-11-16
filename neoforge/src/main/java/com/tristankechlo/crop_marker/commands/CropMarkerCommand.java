@@ -8,6 +8,7 @@ import com.tristankechlo.crop_marker.config.ConfigManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 import static net.minecraft.commands.Commands.literal;
 
@@ -31,7 +32,15 @@ public final class CropMarkerCommand {
 
     private static int configReload(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
-        ConfigManager.reloadConfig();
+        try {
+            ConfigManager.reloadConfig();
+        } catch (Exception e) {
+            MutableComponent start = ResponseHelper.start();
+            MutableComponent message = Component.literal("Error reloading the config! Check the logs for more information.");
+            message.withStyle(ChatFormatting.WHITE);
+            context.getSource().sendFailure(start.append(message));
+            return 0;
+        }
         ResponseHelper.sendMessageConfigReload(source);
         return 1;
     }

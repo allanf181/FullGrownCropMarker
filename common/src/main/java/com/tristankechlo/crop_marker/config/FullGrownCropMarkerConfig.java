@@ -1,53 +1,46 @@
 package com.tristankechlo.crop_marker.config;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
+import com.mojang.serialization.Codec;
+import com.mojang.serialization.DataResult;
+import com.mojang.serialization.JsonOps;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import com.tristankechlo.crop_marker.FullGrownCropMarker;
 import com.tristankechlo.crop_marker.types.MarkerColor;
 import com.tristankechlo.crop_marker.types.MarkerOptions;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class FullGrownCropMarkerConfig {
+public record FullGrownCropMarkerConfig(MarkerOptions defaultOptions, Map<ResourceLocation, MarkerOptions> options) {
 
-    private static MarkerOptions defaultOptions = MarkerOptions.DEFAULT;
-    private static Map<ResourceLocation, MarkerOptions> options = createOptions();
-    private static final Type MAP_TYPE = new TypeToken<Map<ResourceLocation, MarkerOptions>>() {}.getType();
+    private static FullGrownCropMarkerConfig INSTANCE = new FullGrownCropMarkerConfig(MarkerOptions.DEFAULT, createOptions());
+    public static final Codec<FullGrownCropMarkerConfig> CODEC = RecordCodecBuilder.create(
+            (instance) -> instance.group(
+                    MarkerOptions.CODEC.fieldOf("defaultOptions").forGetter(FullGrownCropMarkerConfig::defaultOptions),
+                    Codec.unboundedMap(ResourceLocation.CODEC, MarkerOptions.CODEC).fieldOf("overrides").forGetter(FullGrownCropMarkerConfig::options)
+            ).apply(instance, FullGrownCropMarkerConfig::new)
+    );
 
     public static MarkerOptions getOptions(ResourceLocation id) {
-        return options.getOrDefault(id, defaultOptions);
+        return INSTANCE.options().getOrDefault(id, INSTANCE.defaultOptions());
     }
 
     public static void setToDefault() {
-        defaultOptions = MarkerOptions.DEFAULT;
-        options = createOptions();
+        INSTANCE = new FullGrownCropMarkerConfig(MarkerOptions.DEFAULT, createOptions());
     }
 
-    public static JsonObject serialize(JsonObject jsonObject) {
-        //serialize default options
-        jsonObject.add("defaultOptions", defaultOptions.toJson());
-        //serialize options for each crop
-        JsonElement overrides = ConfigManager.GSON.toJsonTree(options, MAP_TYPE);
-        jsonObject.add("overrides", overrides);
-        return jsonObject;
+    public static JsonElement serialize() {
+        DataResult<JsonElement> result = CODEC.encodeStart(JsonOps.INSTANCE, INSTANCE);
+        result.error().ifPresent((partial) -> FullGrownCropMarker.LOGGER.error(partial.message()));
+        return result.result().orElseThrow();
     }
 
-    public static void deserialize(JsonObject jsonObject) {
-        //deserialize default options
-        defaultOptions = MarkerOptions.fromJson(jsonObject, "defaultOptions", MarkerOptions.DEFAULT);
-        //deserialize options for each crop
-        try {
-            JsonObject overrides = GsonHelper.getAsJsonObject(jsonObject, "overrides", null);
-            options = ConfigManager.GSON.fromJson(overrides, MAP_TYPE);
-        } catch (Exception e) {
-            FullGrownCropMarker.LOGGER.error("Error while deserializing config: {}", e.getMessage());
-            options = createOptions();
-        }
+    public static void deserialize(JsonElement json) {
+        DataResult<FullGrownCropMarkerConfig> result = CODEC.parse(JsonOps.INSTANCE, json);
+        result.error().ifPresent((partial) -> FullGrownCropMarker.LOGGER.error(partial.message()));
+        INSTANCE = result.result().orElseThrow();
     }
 
     private static Map<ResourceLocation, MarkerOptions> createOptions() {

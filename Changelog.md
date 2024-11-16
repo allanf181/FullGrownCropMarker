@@ -1,5 +1,11 @@
 # Changelog
 
+### Version 1.20.4 - 1.2.1
+
+- slightly changed config handling
+    - config no longer resets on errors
+    - better error messages in the logs, describing the error more clear now
+
 ### Version 1.20.4 - 1.2.0
 
 - port to 1.20.4

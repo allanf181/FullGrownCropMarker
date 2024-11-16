@@ -1,18 +1,12 @@
 package com.tristankechlo.crop_marker.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.*;
 import com.google.gson.stream.JsonWriter;
 import com.tristankechlo.crop_marker.FullGrownCropMarker;
 import com.tristankechlo.crop_marker.platform.IPlatformHelper;
-import com.tristankechlo.crop_marker.types.MarkerOptions;
-import com.tristankechlo.crop_marker.util.ResourceLocationSerializer;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.GsonHelper;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 
@@ -20,71 +14,64 @@ import java.io.FileWriter;
 public final class ConfigManager {
 
     private static final File CONFIG_DIR = IPlatformHelper.INSTANCE.getConfigDirectory().toFile();
-    public static final Gson GSON = new GsonBuilder().setPrettyPrinting().serializeNulls()
-            .registerTypeAdapter(MarkerOptions.class, new MarkerOptions.Serializer())
-            .registerTypeAdapter(ResourceLocation.class, new ResourceLocationSerializer())
-            .create();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
     public static final String FILE_NAME = FullGrownCropMarker.MOD_ID + ".json";
+    private static final File CONFIG_FILE = new File(CONFIG_DIR, FILE_NAME);
 
     public static void loadAndVerifyConfig() {
         ConfigManager.createConfigFolder();
-        FullGrownCropMarkerConfig.setToDefault();
-        File configFile = new File(CONFIG_DIR, FILE_NAME);
-        if (configFile.exists()) {
-            ConfigManager.loadConfigFromFile(configFile);
-            ConfigManager.writeConfigToFile(configFile);
-            FullGrownCropMarker.LOGGER.info("Saved the checked/corrected config '{}'", FILE_NAME);
-        } else {
-            ConfigManager.writeConfigToFile(configFile);
+
+        if (!CONFIG_FILE.exists()) {
+            FullGrownCropMarkerConfig.setToDefault();
+            ConfigManager.writeConfigToFile();
             FullGrownCropMarker.LOGGER.warn("No config '{}' was found, created a new one.", FILE_NAME);
+            return;
+        }
+
+        try {
+            ConfigManager.loadConfigFromFile();
+            FullGrownCropMarker.LOGGER.info("Config '{}' was loaded.", FILE_NAME);
+        } catch (Exception e) {
+            FullGrownCropMarker.LOGGER.error(e.getMessage());
+            FullGrownCropMarker.LOGGER.error("Error loading config '{}', config hasn't been loaded. Using default config.", FILE_NAME);
+            FullGrownCropMarkerConfig.setToDefault();
         }
     }
 
-    private static void writeConfigToFile(File file) {
-        JsonObject jsonObject = FullGrownCropMarkerConfig.serialize(new JsonObject());
+    private static void loadConfigFromFile() throws FileNotFoundException {
+        JsonParser parser = new JsonParser();
+        JsonElement jsonElement = parser.parse(new FileReader(CONFIG_FILE));
+        JsonObject json = jsonElement.getAsJsonObject();
+        FullGrownCropMarkerConfig.deserialize(json);
+    }
+
+    private static void writeConfigToFile() {
         try {
-            JsonWriter writer = new JsonWriter(new FileWriter(file));
+            JsonElement jsonObject = FullGrownCropMarkerConfig.serialize();
+            JsonWriter writer = new JsonWriter(new FileWriter(CONFIG_FILE));
             writer.setIndent("\t");
             GSON.toJson(jsonObject, writer);
             writer.close();
         } catch (Exception e) {
-            FullGrownCropMarker.LOGGER.error("There was an error writing the config to file '{}'", FILE_NAME);
-            e.printStackTrace();
-        }
-    }
-
-    private static void loadConfigFromFile(File file) {
-        JsonObject json = null;
-        try {
-            JsonElement jsonElement = GsonHelper.fromJson(GSON, new FileReader(file), JsonElement.class);
-            json = jsonElement.getAsJsonObject();
-        } catch (Exception e) {
-            FullGrownCropMarker.LOGGER.error("There was an error loading the config file '{}'", FILE_NAME);
-            e.printStackTrace();
-        }
-        if (json != null) {
-            FullGrownCropMarkerConfig.deserialize(json);
-            FullGrownCropMarker.LOGGER.info("Config '{}' was successfully loaded.", FILE_NAME);
-        } else {
-            FullGrownCropMarker.LOGGER.error("Error loading config '{}', config hasn't been loaded.", FILE_NAME);
+            FullGrownCropMarker.LOGGER.error("There was an error writing the config to file: '{}'", FILE_NAME);
+            FullGrownCropMarker.LOGGER.error(e.getMessage());
         }
     }
 
     public static void resetConfig() {
         FullGrownCropMarkerConfig.setToDefault();
-        File configFile = new File(CONFIG_DIR, FILE_NAME);
-        ConfigManager.writeConfigToFile(configFile);
+        ConfigManager.writeConfigToFile();
         FullGrownCropMarker.LOGGER.info("Config '{}' was set to default.", FILE_NAME);
     }
 
-    public static void reloadConfig() {
+    public static void reloadConfig() throws FileNotFoundException {
         File configFile = new File(CONFIG_DIR, FILE_NAME);
         if (configFile.exists()) {
-            ConfigManager.loadConfigFromFile(configFile);
-            ConfigManager.writeConfigToFile(configFile);
+            ConfigManager.loadConfigFromFile();
+            ConfigManager.writeConfigToFile();
             FullGrownCropMarker.LOGGER.info("Saved the checked/corrected config " + FILE_NAME);
         } else {
-            ConfigManager.writeConfigToFile(configFile);
+            ConfigManager.writeConfigToFile();
             FullGrownCropMarker.LOGGER.warn("No config '{}' was found, created a new one", FILE_NAME);
         }
     }
