@@ -1,5 +1,9 @@
 # Changelog
 
+### Version 1.20.4 - 1.2.3
+
+- add support for Amethyst Clusters (small buds, medium buds, large buds, and full clusters)
+
 ### Version 1.20.4 - 1.2.1
 
 - slightly changed config handling

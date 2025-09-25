@@ -4,6 +4,7 @@ import com.tristankechlo.crop_marker.util.ResourceLocationHelper;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.NetherWartBlock;
@@ -37,6 +38,11 @@ public abstract class BlockModelShaperMixin {
         if (block instanceof SweetBerryBushBlock) {
             int age = state.getValue(SweetBerryBushBlock.AGE);
             return age > 1;
+        }
+        if (block instanceof AmethystClusterBlock) {
+            // Amethyst clusters don't have growth stages - they are always "mature" when placed
+            // We can show markers for all amethyst cluster blocks
+            return true;
         }
         //TODO handle other blocks
         return false;
