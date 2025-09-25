@@ -1,5 +1,16 @@
 # Changelog
 
+### Version 1.21.8 - 1.4.0
+
+- port to 1.21.8
+- update Java requirement to Java 21
+- update Fabric API to 0.133.4+1.21.8
+- update Fabric Loader to 0.17.2
+- update NeoForge to 21.8.46
+- update Fabric Loom to 1.11.4
+- update NeoForge Gradle plugin to 7.0.165
+- add support for Amethyst Clusters (fully grown clusters only)
+
 ### Version 1.21.1 - 1.3.0
 
 - port to 1.21.1
