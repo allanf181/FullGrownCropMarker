@@ -2,7 +2,7 @@
 
 ### Version 1.20.4 - 1.2.3
 
-- add support for Amethyst Clusters (small buds, medium buds, large buds, and full clusters)
+- add support for Amethyst Clusters (fully grown clusters only)
 
 ### Version 1.20.4 - 1.2.1
 

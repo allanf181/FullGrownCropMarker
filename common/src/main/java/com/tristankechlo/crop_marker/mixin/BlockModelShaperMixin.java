@@ -6,6 +6,7 @@ import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.NetherWartBlock;
 import net.minecraft.world.level.block.SweetBerryBushBlock;
@@ -40,9 +41,8 @@ public abstract class BlockModelShaperMixin {
             return age > 1;
         }
         if (block instanceof AmethystClusterBlock) {
-            // Amethyst clusters don't have growth stages - they are always "mature" when placed
-            // We can show markers for all amethyst cluster blocks
-            return true;
+            // Only mark the fully grown amethyst cluster, not the smaller buds
+            return block == Blocks.AMETHYST_CLUSTER;
         }
         //TODO handle other blocks
         return false;

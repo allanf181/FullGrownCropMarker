@@ -52,10 +52,7 @@ public record FullGrownCropMarkerConfig(MarkerOptions defaultOptions, Map<Resour
         options.put(getID("nether_wart_stage2"), new MarkerOptions(-1, false, true, MarkerColor.RED));
         options.put(getID("sweet_berry_bush_stage2"), new MarkerOptions(2, false, true, MarkerColor.YELLOW));
         options.put(getID("sweet_berry_bush_stage3"), new MarkerOptions(2, false, true, MarkerColor.GREEN));
-        // Amethyst clusters - different sizes
-        options.put(getID("small_amethyst_bud"), new MarkerOptions(3, false, true, MarkerColor.PURPLE));
-        options.put(getID("medium_amethyst_bud"), new MarkerOptions(4, false, true, MarkerColor.PURPLE));
-        options.put(getID("large_amethyst_bud"), new MarkerOptions(5, false, true, MarkerColor.PURPLE));
+        // Amethyst cluster - only the fully grown cluster
         options.put(getID("amethyst_cluster"), new MarkerOptions(6, false, true, MarkerColor.PURPLE));
         return options;
     }
