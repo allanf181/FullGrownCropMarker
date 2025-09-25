@@ -1,5 +1,12 @@
 # Changelog
 
+### Version 1.21.1 - 1.3.0
+
+- port to 1.21.1
+- update Java requirement to Java 21
+- update Fabric, NeoForge, and Forge versions for 1.21.1 compatibility
+- add support for Amethyst Clusters (fully grown clusters only)
+
 ### Version 1.20.4 - 1.2.3
 
 - add support for Amethyst Clusters (fully grown clusters only)
