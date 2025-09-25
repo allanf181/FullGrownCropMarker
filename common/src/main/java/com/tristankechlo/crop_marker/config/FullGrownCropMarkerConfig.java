@@ -58,7 +58,7 @@ public record FullGrownCropMarkerConfig(MarkerOptions defaultOptions, Map<Resour
     }
 
     private static ResourceLocation getID(String path) {
-        return new ResourceLocation("minecraft", "block/" + path);
+        return ResourceLocation.fromNamespaceAndPath("minecraft", "block/" + path);
     }
 
 }

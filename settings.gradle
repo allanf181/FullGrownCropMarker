@@ -56,4 +56,4 @@ plugins {
 }
 
 rootProject.name = 'FullGrownCropMarker'
-include("common", "fabric", "forge", "neoforge")
+include("common", "fabric", "neoforge")

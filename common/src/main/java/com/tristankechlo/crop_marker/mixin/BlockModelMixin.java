@@ -31,8 +31,8 @@ import java.util.function.Function;
 @Mixin(BlockModel.class)
 public abstract class BlockModelMixin {
 
-    private static final ResourceLocation FULL_GROWN_CROP_MARKER_TEXTURE = new ResourceLocation(FullGrownCropMarker.MOD_ID, "block/marker");
-    private static final ResourceLocation FULL_GROWN_CROP_MARKER_TEXTURE_ANIMATED = new ResourceLocation(FullGrownCropMarker.MOD_ID, "block/marker_animated");
+    private static final ResourceLocation FULL_GROWN_CROP_MARKER_TEXTURE = ResourceLocation.fromNamespaceAndPath(FullGrownCropMarker.MOD_ID, "block/marker");
+    private static final ResourceLocation FULL_GROWN_CROP_MARKER_TEXTURE_ANIMATED = ResourceLocation.fromNamespaceAndPath(FullGrownCropMarker.MOD_ID, "block/marker_animated");
     private static final Either<Material, String> FULL_GROWN_CROP_MARKER_SPRITE = Either.left(new Material(InventoryMenu.BLOCK_ATLAS, FULL_GROWN_CROP_MARKER_TEXTURE));
     private static final Either<Material, String> FULL_GROWN_CROP_MARKER_SPRITE_ANIMATED = Either.left(new Material(InventoryMenu.BLOCK_ATLAS, FULL_GROWN_CROP_MARKER_TEXTURE_ANIMATED));
     private boolean FullGrownCropMarker$alreadyHasMarker = false; // sometimes multiple states use the same model, prevent adding marker multiple times
