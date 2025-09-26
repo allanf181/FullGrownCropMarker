@@ -30,8 +30,8 @@ public abstract class MultiVariantMixin {
                 //reapply the marker to all the variants of this model
                 //this is needed because the models are loaded as a WeightedUnbakedModel from the blockstates json
                 //the WeightedUnbakedModel then loads the variant models from the actual models json
-                ResourceLocationHelper location = (ResourceLocationHelper) variant.getModelLocation();
-                boolean hasMarker = ((ResourceLocationHelper) modelId).FullGrownCropMarker$shouldHaveMarker();
+                ResourceLocationHelper location = (ResourceLocationHelper) (Object) variant.getModelLocation();
+                boolean hasMarker = ((ResourceLocationHelper) (Object) modelId).FullGrownCropMarker$shouldHaveMarker();
                 location.FullGrownCropMarker$setShouldHaveMarker(hasMarker);
             });
         }

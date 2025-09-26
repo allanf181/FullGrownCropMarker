@@ -26,7 +26,7 @@ public abstract class BlockModelShaperMixin {
         Block block = state.getBlock();
         boolean shouldHaveMarker = FullGrownCropMarker$shouldHaveMarker(block, state);
         ModelResourceLocation modelIdentifier = cir.getReturnValue();
-        ((ResourceLocationHelper) modelIdentifier).FullGrownCropMarker$setShouldHaveMarker(shouldHaveMarker);
+        ((ResourceLocationHelper) (Object) modelIdentifier).FullGrownCropMarker$setShouldHaveMarker(shouldHaveMarker);
     }
 
     private static boolean FullGrownCropMarker$shouldHaveMarker(Block block, BlockState state) {
