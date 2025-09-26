@@ -125,3 +125,4 @@ jobs:
         with:
           webhook-url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           raw-data: ./embed.json
+          
