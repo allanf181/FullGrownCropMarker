@@ -1,19 +1,12 @@
 pluginManagement {
     repositories {
+        // Fabric publishes Loom snapshots here:
+        maven { 
+            name = 'Fabric'
+            url = 'https://maven.fabricmc.net/' 
+        }
         gradlePluginPortal()
         mavenCentral()
-        exclusiveContent {
-            forRepository {
-                maven {
-                    name = 'Fabric'
-                    url = uri("https://maven.fabricmc.net")
-                }
-            }
-            filter {
-                includeGroup("net.fabricmc")
-                includeGroup("fabric-loom")
-            }
-        }
         exclusiveContent {
             forRepository {
                 maven {
