@@ -74,7 +74,6 @@ jobs:
         shell: bash
         run: |
           mkdir ./dist
-          mv ./forge/build/libs/${{ env.MODID }}-*.jar ./dist
           mv ./fabric/build/libs/${{ env.MODID }}-*.jar ./dist
           mv ./neoforge/build/libs/${{ env.MODID }}-*.jar ./dist
           echo -e "$(ls -lahG ./dist)"
