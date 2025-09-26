@@ -1,9 +1,9 @@
 name: Build and Publish Release
 
 on:
-  workflow_dispatch:
   release:
     types: [ published ]
+  workflow_dispatch:
 
 env:
   MODID: "crop-marker"
