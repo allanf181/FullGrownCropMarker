@@ -1,6 +1,6 @@
 plugins {
     id 'marker-loader'
-    id 'fabric-loom' version '1.8.10'
+    id 'fabric-loom' version '1.10.1'
 }
 
 repositories {
