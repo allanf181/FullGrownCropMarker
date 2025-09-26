@@ -4,7 +4,9 @@ import com.tristankechlo.crop_marker.util.ResourceLocationHelper;
 import net.minecraft.client.renderer.block.BlockModelShaper;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.block.AmethystClusterBlock;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CropBlock;
 import net.minecraft.world.level.block.NetherWartBlock;
 import net.minecraft.world.level.block.SweetBerryBushBlock;
@@ -24,7 +26,7 @@ public abstract class BlockModelShaperMixin {
         Block block = state.getBlock();
         boolean shouldHaveMarker = FullGrownCropMarker$shouldHaveMarker(block, state);
         ModelResourceLocation modelIdentifier = cir.getReturnValue();
-        ((ResourceLocationHelper) modelIdentifier).FullGrownCropMarker$setShouldHaveMarker(shouldHaveMarker);
+        ((ResourceLocationHelper) (Object) modelIdentifier).FullGrownCropMarker$setShouldHaveMarker(shouldHaveMarker);
     }
 
     private static boolean FullGrownCropMarker$shouldHaveMarker(Block block, BlockState state) {
@@ -37,6 +39,10 @@ public abstract class BlockModelShaperMixin {
         if (block instanceof SweetBerryBushBlock) {
             int age = state.getValue(SweetBerryBushBlock.AGE);
             return age > 1;
+        }
+        if (block instanceof AmethystClusterBlock) {
+            // Only mark the fully grown amethyst cluster, not the smaller buds
+            return block == Blocks.AMETHYST_CLUSTER;
         }
         //TODO handle other blocks
         return false;

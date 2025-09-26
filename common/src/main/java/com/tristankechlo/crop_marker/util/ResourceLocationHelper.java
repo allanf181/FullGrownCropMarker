@@ -5,10 +5,11 @@ import net.minecraft.resources.ResourceLocation;
 public interface ResourceLocationHelper {
 
     static boolean FullGrownCropMarker$shouldHaveMarker(ResourceLocation id) {
-        if (id instanceof ResourceLocationHelper) {
-            return ((ResourceLocationHelper) id).FullGrownCropMarker$shouldHaveMarker();
+        try {
+            return ((ResourceLocationHelper) (Object) id).FullGrownCropMarker$shouldHaveMarker();
+        } catch (ClassCastException e) {
+            return false;
         }
-        return false;
     }
 
     void FullGrownCropMarker$setShouldHaveMarker(boolean hasMarker);

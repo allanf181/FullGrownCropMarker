@@ -52,11 +52,13 @@ public record FullGrownCropMarkerConfig(MarkerOptions defaultOptions, Map<Resour
         options.put(getID("nether_wart_stage2"), new MarkerOptions(-1, false, true, MarkerColor.RED));
         options.put(getID("sweet_berry_bush_stage2"), new MarkerOptions(2, false, true, MarkerColor.YELLOW));
         options.put(getID("sweet_berry_bush_stage3"), new MarkerOptions(2, false, true, MarkerColor.GREEN));
+        // Amethyst cluster - only the fully grown cluster
+        options.put(getID("amethyst_cluster"), new MarkerOptions(6, false, true, MarkerColor.PURPLE));
         return options;
     }
 
     private static ResourceLocation getID(String path) {
-        return new ResourceLocation("minecraft", "block/" + path);
+        return ResourceLocation.fromNamespaceAndPath("minecraft", "block/" + path);
     }
 
 }
